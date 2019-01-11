@@ -230,9 +230,14 @@ namespace YoutubeExtractor
 
         private static string GetHtml5PlayerVersion(JObject json)
         {
-            var regex = new Regex(@"player-(.+?).js");
+            var regex = new Regex(@"player_ias-(.+?).js");
 
             string js = json["assets"]["js"].ToString();
+
+            Match match = regex.Match(js);
+            if (match.Success) return match.Result("$1");
+
+            regex = new Regex(@"player-(.+?).js");
 
             return regex.Match(js).Result("$1");
         }
